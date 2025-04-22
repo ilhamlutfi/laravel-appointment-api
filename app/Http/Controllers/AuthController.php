@@ -20,10 +20,7 @@ class AuthController extends Controller
         try {
             $user = $this->authService->registerAttempt($request->validated());
 
-            return response()->json([
-                'message' => 'User registered successfully',
-                'data' => new UserResource($user),
-            ], 201);
+            return new UserResource(true, 'User registered successfully', $user);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'User registration failed',
@@ -37,10 +34,7 @@ class AuthController extends Controller
         try {
             $user = $this->authService->loginAttempt($request->validated());
 
-            return response()->json([
-                'message' => 'User logged in successfully',
-                'data' => new UserResource($user),
-            ], 200);
+            return new UserResource(true, 'User logged in successfully', $user, $user->token);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'User login failed',
